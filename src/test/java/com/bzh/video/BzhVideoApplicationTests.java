@@ -1,9 +1,9 @@
-package com.bzh.video;
+package video;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
+@SpringBootTest(classes = BzhVideoApplication.class)
 class BzhVideoApplicationTests {
 
     @Test
