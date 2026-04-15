@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="video.mapper.ImageVideoGenerateMapper">
+
+    <resultMap id="ImageVideoGenerateMap" type="video.domain.model.ImageVideoGenerateModel">
+        <id property="id" column="id"/>
+        <result property="imageId" column="image_id"/>
+        <result property="videoUrl" column="video_url"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <!-- 单条插入 -->
+    <insert id="insert" parameterType="video.domain.model.ImageVideoGenerateModel" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO bzh_image_video_generate (image_id, video_url)
+        VALUES (#{imageId}, #{videoUrl})
+    </insert>
+
+    <!-- 批量插入 -->
+    <insert id="batchInsert" parameterType="java.util.List" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO bzh_image_video_generate (image_id, video_url)
+        VALUES
+        <foreach collection="list" item="item" separator=",">
+            (#{item.imageId}, #{item.videoUrl})
+        </foreach>
+    </insert>
+
+    <!-- 根据ID查询 -->
+    <select id="selectById" parameterType="long" resultMap="ImageVideoGenerateMap">
+        SELECT id, image_id, video_url, create_time, update_time
+        FROM bzh_image_video_generate
+        WHERE id = #{id}
+    </select>
+
+    <!-- 根据图片ID查询 -->
+    <select id="selectByImageId" parameterType="long" resultMap="ImageVideoGenerateMap">
+        SELECT id, image_id, video_url, create_time, update_time
+        FROM bzh_image_video_generate
+        WHERE image_id = #{imageId}
+        ORDER BY create_time DESC
+    </select>
+
+    <!-- 根据图片ID删除 -->
+    <delete id="deleteByImageId" parameterType="long">
+        DELETE FROM bzh_image_video_generate
+        WHERE image_id = #{imageId}
+    </delete>
+
+    <!-- 根据ID删除 -->
+    <delete id="deleteById" parameterType="long">
+        DELETE FROM bzh_image_video_generate
+        WHERE id = #{id}
+    </delete>
+
+</mapper>

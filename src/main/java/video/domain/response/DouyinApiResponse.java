@@ -14,7 +14,7 @@ public class DouyinApiResponse<T> {
     @JsonProperty("code")
     private Integer statusCode;
     private String message;
+    @JsonProperty("message_zh")
+    private String messageZh;
     private T data;
-    private Long cursor;
-    private Boolean hasMore;
 }

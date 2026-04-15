@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="video.mapper.ImageVideoRelationMapper">
+
+    <resultMap id="ImageVideoRelationMap" type="video.domain.model.ImageVideoRelationModel">
+        <id property="id" column="id"/>
+        <result property="imageId" column="image_id"/>
+        <result property="videoId" column="video_id"/>
+        <result property="videoDesc" column="video_desc"/>
+        <result property="videoCoverUrl" column="video_cover_url"/>
+        <result property="videoPlayUrl" column="video_play_url"/>
+        <result property="diggCount" column="digg_count"/>
+        <result property="commentCount" column="comment_count"/>
+        <result property="shareCount" column="share_count"/>
+        <result property="collectCount" column="collect_count"/>
+        <result property="duration" column="duration"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <!-- 单条插入 -->
+    <insert id="insertRelation" parameterType="video.domain.model.ImageVideoRelationModel" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO bzh_image_video_relation (
+            image_id, video_id, video_desc, video_cover_url, video_play_url,
+            digg_count, comment_count, share_count, collect_count, duration
+        ) VALUES (
+                     #{imageId}, #{videoId}, #{videoDesc}, #{videoCoverUrl}, #{videoPlayUrl},
+                     #{diggCount}, #{commentCount}, #{shareCount}, #{collectCount}, #{duration}
+                 )
+    </insert>
+
+    <!-- 批量插入 -->
+    <insert id="batchInsertRelations" parameterType="java.util.List" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO bzh_image_video_relation (
+        image_id, video_id, video_desc, video_cover_url, video_play_url,
+        digg_count, comment_count, share_count, collect_count, duration
+        ) VALUES
+        <foreach collection="list" item="item" separator=",">
+            (
+            #{item.imageId}, #{item.videoId}, #{item.videoDesc}, #{item.videoCoverUrl}, #{item.videoPlayUrl},
+            #{item.diggCount}, #{item.commentCount}, #{item.shareCount}, #{item.collectCount}, #{item.duration}
+            )
+        </foreach>
+    </insert>
+
+    <!-- 根据图片ID查询关联视频 -->
+    <select id="selectRelationsByImageId" parameterType="long" resultMap="ImageVideoRelationMap">
+        SELECT
+            id, image_id, video_id, video_desc, video_cover_url, video_play_url,
+            digg_count, comment_count, share_count, collect_count, duration,
+            create_time, update_time
+        FROM bzh_image_video_relation
+        WHERE image_id = #{imageId}
+        ORDER BY digg_count DESC, create_time DESC
+    </select>
+
+    <!-- 根据ID列表批量查询视频 -->
+    <select id="selectByIds" parameterType="java.util.List" resultMap="ImageVideoRelationMap">
+        SELECT
+        id, image_id, video_id, video_desc, video_cover_url, video_play_url,
+        digg_count, comment_count, share_count, collect_count, duration,
+        create_time, update_time
+        FROM bzh_image_video_relation
+        WHERE id IN
+        <foreach collection="ids" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
+
+    <!-- 根据ID查询视频 -->
+    <select id="selectById" resultMap="ImageVideoRelationMap">
+        SELECT
+            id, image_id, video_id, video_desc, video_cover_url, video_play_url,
+            digg_count, comment_count, share_count, collect_count, duration,
+            create_time, update_time
+        FROM bzh_image_video_relation
+        WHERE id = #{id}
+    </select>
+
+</mapper>

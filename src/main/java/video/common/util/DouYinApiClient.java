@@ -59,22 +59,9 @@ public class DouYinApiClient {
                     log.error("抖音搜索请求失败: status={}, body={}", statusCode, responseBody);
                     throw new RuntimeException("抖音搜索请求失败: " + statusCode);
                 }
-
-                log.info("抖音API响应: {}", responseBody);
-
-                DouyinApiResponse<DouyinSearchResponse> apiResponse = JsonUtils.fromJson(responseBody, 
+                DouyinApiResponse<DouyinSearchResponse> apiResponse = JsonUtils.fromJson(responseBody,
                         new com.fasterxml.jackson.core.type.TypeReference<DouyinApiResponse<DouyinSearchResponse>>() {});
-
-                if (apiResponse == null) {
-                    log.error("解析抖音API响应失败");
-                    throw new RuntimeException("解析抖音API响应失败");
-                }
-
-                if (apiResponse.getData() == null) {
-                    log.warn("抖音搜索无数据返回，keyword={}", request.getKeyword());
-                    return new DouyinSearchResponse();
-                }
-
+                log.info("抖音搜索完成，返回 {} 条结果", apiResponse.getData().getBusinessData().size());
                 return apiResponse.getData();
             }
         } catch (Exception e) {
