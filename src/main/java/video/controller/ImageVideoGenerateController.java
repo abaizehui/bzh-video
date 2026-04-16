@@ -3,15 +3,12 @@ package video.controller;
 import java.util.List;
 import javax.annotation.Resource;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 import video.common.ApiResult;
 import video.domain.model.ImageVideoGenerateModel;
 import video.domain.request.GenerateVideRequest;
 import video.facade.ImageVideoGenerateFacade;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 /**
  * 图片-视频生成控制器
@@ -36,10 +33,9 @@ public class ImageVideoGenerateController {
      * @param request request
      * @return 统一响应，data 为保存后的记录列表
      */
-    @GetMapping("/video")
-    public ApiResult<List<ImageVideoGenerateModel>> generateVideo(@RequestBody GenerateVideRequest request) {
-        List<ImageVideoGenerateModel> results = imageVideoGenerateFacade.generateVideo(request);
-        return ApiResult.success(results);
+    @PostMapping("/video")
+    public ApiResult<String> generateVideo(@RequestBody GenerateVideRequest request) {
+        return ApiResult.success(imageVideoGenerateFacade.generateVideo(request));
     }
 
 

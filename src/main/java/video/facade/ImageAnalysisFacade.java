@@ -44,8 +44,8 @@ public class ImageAnalysisFacade {
                 .analysisName(doubaoVisionUtil.recognizeName(imageUrl))
                 .analysisContent(doubaoVisionUtil.recognizeContent(imageUrl))  // 暂不分析，后续填充
                 .build();
-        Long imageId = imageAnalysisService.create(record);
-        log.info("图片上传成功，imageId={}", imageId);
+        imageAnalysisService.create(record);
+        log.info("图片上传成功，imageId={}", record.getId());
         return record;
     }
 

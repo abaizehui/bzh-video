@@ -37,7 +37,7 @@ public class ImageVideoGenerateFacade {
      * @param request request
      * @return 保存后的记录列表（包含生成的ID）
      */
-    public List<ImageVideoGenerateModel> generateVideo(GenerateVideRequest request) {
+    public String generateVideo(GenerateVideRequest request) {
         List<Long> videoIds = request.getVideoIds();
         if (CollectionUtils.isEmpty(videoIds)) {
             throw new IllegalArgumentException("视频ID列表不能为空");
@@ -46,9 +46,14 @@ public class ImageVideoGenerateFacade {
         // 1. 查询视频信息
         List<ImageVideoRelationModel> relations = imageVideoRelationService.queryByIds(videoIds);
         if (CollectionUtils.isEmpty(relations)) {
-            return Collections.emptyList();
+            return null;
         }
-        return null;
+        try {
+            Thread.sleep(5000);
+        } catch (Exception exception) {
+            log.error("错误");
+        }
+        return relations.get(0).getVideoPlayUrl();
     }
 
 }
