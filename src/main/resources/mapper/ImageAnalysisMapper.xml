@@ -8,18 +8,19 @@
         <id property="id" column="id"/>
         <result property="fileName" column="file_name"/>
         <result property="imageUrl" column="image_url"/>
+        <result property="analysisName" column="analysis_name"/>
         <result property="analysisContent" column="analysis_content"/>
         <result property="createTime" column="create_time"/>
         <result property="updateTime" column="update_time"/>
     </resultMap>
 
     <insert id="insertImageAnalysis" parameterType="video.domain.model.ImageAnalysisRecordModel" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO bzh_image_analysis (file_name, image_url, analysis_content)
-        VALUES (#{fileName}, #{imageUrl}, #{analysisContent})
+        INSERT INTO bzh_image_analysis (file_name, image_url, analysis_name, analysis_content)
+        VALUES (#{fileName}, #{imageUrl}, #{analysisName}, #{analysisContent})
     </insert>
 
     <select id="selectImageAnalysisById" parameterType="long" resultMap="ImageAnalysisMap">
-        SELECT id, file_name, image_url, analysis_content, create_time, update_time
+        SELECT id, file_name, image_url, analysis_name, analysis_content, create_time, update_time
         FROM bzh_image_analysis
         WHERE id = #{id}
     </select>

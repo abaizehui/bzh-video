@@ -34,18 +34,19 @@ public class ImageAnalysisFacade {
      * @return 图片记录ID
      * @throws IOException 上传失败时抛出
      */
-    public Long uploadImage(MultipartFile file) throws IOException {
+    public ImageAnalysisRecordModel uploadImage(MultipartFile file) throws IOException {
         String uploadPath = BzhConfig.getUploadPath();
         String storedFilename = FileNameUtils.generateWithTimestamp(file.getOriginalFilename());
         String imageUrl = aliYunOSSUtils.uploadFile(file, uploadPath + "/" + storedFilename);
         ImageAnalysisRecordModel record = ImageAnalysisRecordModel.builder()
                 .fileName(storedFilename)
                 .imageUrl(imageUrl)
-                .analysisContent(doubaoVisionUtil.recognizeName(imageUrl))  // 暂不分析，后续填充
+                .analysisName(doubaoVisionUtil.recognizeName(imageUrl))
+                .analysisContent(doubaoVisionUtil.recognizeContent(imageUrl))  // 暂不分析，后续填充
                 .build();
         Long imageId = imageAnalysisService.create(record);
         log.info("图片上传成功，imageId={}", imageId);
-        return imageId;
+        return record;
     }
 
 }

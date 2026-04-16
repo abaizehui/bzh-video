@@ -4,6 +4,7 @@ import java.io.IOException;
 import javax.annotation.Resource;
 
 import video.common.ApiResult;
+import video.domain.model.ImageAnalysisRecordModel;
 import video.facade.ImageAnalysisFacade;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -33,9 +34,8 @@ public class ImageAnalysisController {
      * @return 统一响应，data 为图片记录ID
      */
     @PostMapping("/upload")
-    public ApiResult<Long> upload(@RequestParam("file") MultipartFile file) throws IOException {
-        Long imageId = imageAnalysisFacade.uploadImage(file);
-        return ApiResult.success(imageId);
+    public ApiResult<ImageAnalysisRecordModel> upload(@RequestParam("file") MultipartFile file) throws IOException {
+        return ApiResult.success(imageAnalysisFacade.uploadImage(file));
     }
 
 }

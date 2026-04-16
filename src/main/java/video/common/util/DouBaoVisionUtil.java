@@ -74,6 +74,48 @@ public class DouBaoVisionUtil {
         return content;
     }
 
+    /**
+     * 识别图片，返回商品名称
+     * @param imageUrl 图片URL
+     * @return 识别结果
+     */
+    public String recognizeContent(String imageUrl) {
+        ConnectionPool connectionPool = new ConnectionPool(5, 1, TimeUnit.SECONDS);
+        Dispatcher dispatcher = new Dispatcher();
+        ArkService service = ArkService.builder()
+                .dispatcher(dispatcher)
+                .connectionPool(connectionPool)
+                .baseUrl(baseUrl)
+                .apiKey(apiKey)
+                .build();
+
+        ArrayList<ChatCompletionContentPart> parts = new ArrayList<>();
+        parts.add(ChatCompletionContentPart.builder()
+                .type("image_url")
+                .imageUrl(new ChatCompletionContentPart.ChatCompletionContentPartImageURL(imageUrl))
+                .build());
+        String prompt = "解析图片内容、风格、主体特征";
+        parts.add(ChatCompletionContentPart.builder().type("text").text(prompt).build());
+
+        ChatMessage message = ChatMessage.builder()
+                .role(ChatMessageRole.USER)
+                .multiContent(parts)
+                .build();
+
+        ChatCompletionRequest request = ChatCompletionRequest.builder()
+                .model(model)
+                .messages(Collections.singletonList(message))
+                .build();
+
+        String content = String.join("、", service.createChatCompletion(request)
+                .getChoices()
+                .stream()
+                .map(choice -> String.valueOf(choice.getMessage().getContent()))
+                .toArray(String[]::new));
+        service.shutdownExecutor();
+        return content;
+    }
+
 
     /**
      * 根据图片URL创建图生视频任务

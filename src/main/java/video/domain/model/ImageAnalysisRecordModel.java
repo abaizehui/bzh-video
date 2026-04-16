@@ -37,6 +37,12 @@ public class ImageAnalysisRecordModel {
     private String imageUrl;
 
     /**
+     * 名称
+     * <p>AI识别图片后生成的文本描述，用于抖音视频搜索的关键词</p >
+     */
+    private String analysisName;
+
+    /**
      * 解析内容
      * <p>AI识别图片后生成的文本描述，用于抖音视频搜索的关键词</p >
      */
