@@ -23,6 +23,9 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 public class ImageVideoGenerateFacade {
 
+    private static final String FIXED_VOICE_COPY = "这款____真的惊艳到我了。\n" +
+            "不管是颜值还是实用性，都很在线。\n" +
+            "日常使用超方便，推荐给大家。\n";
 
     @Resource
     private ImageVideoRelationService imageVideoRelationService;
@@ -69,7 +72,7 @@ public class ImageVideoGenerateFacade {
         log.info("视频文案生成提示词: {}", analyzePrompt);
         String videoCopy = douBaoVisionUtil.analyzeVideo(first.getVideoPlayUrl(), analyzePrompt);
         log.info("视频文案生成结果: {}", videoCopy);
-        String seedancePrompt = douBaoVisionUtil.buildSeedancePromptFromCopy(videoCopy);
+        String seedancePrompt = douBaoVisionUtil.buildSeedancePromptFromCopy(videoCopy, FIXED_VOICE_COPY);
         log.info("Seedance 生成提示词: {}", seedancePrompt);
         String generatedVideoUrl = douBaoVisionUtil.generateVideoBySeedance(imageAnalysisRecordModel.getImageUrl(), seedancePrompt);
         log.info("生成视频完成, generatedVideoUrl={}", generatedVideoUrl);

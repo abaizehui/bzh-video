@@ -183,8 +183,13 @@ public class DouBaoVisionUtil {
                 "干净白色背景，无杂物，细节锐利\n";
     }
 
-    public String buildSeedancePromptFromCopy(String copyText) {
-        return copyText + " --duration 10 --camerafixed false --watermark false";
+    public String buildSeedancePromptFromCopy(String copyText, String voiceCopy) {
+        StringBuilder promptBuilder = new StringBuilder(StringUtils.hasText(copyText) ? copyText.trim() : "");
+        if (StringUtils.hasText(voiceCopy)) {
+            promptBuilder.append("\n请为该视频搭配中文旁白文案：").append(voiceCopy.trim());
+        }
+        promptBuilder.append(" --duration 10 --camerafixed false --watermark false");
+        return promptBuilder.toString();
     }
 
     public String generateVideoBySeedance(String imageUrl, String prompt) {
