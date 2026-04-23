@@ -796,13 +796,13 @@ function renderGeneratedVideoPreview(videoUrl) {
         .replace(/"/g, '&quot;')
         .replace(/'/g, '&#39;');
     box.innerHTML =
-        '<a class="relative w-full h-full bg-black overflow-hidden flex items-center justify-center block" target="_blank" rel="noopener noreferrer" href="' + escapedUrl + '">' +
-        '<div class="w-full h-full flex items-center justify-center text-xs text-gray-300">点击打开视频</div>' +
-        '<div class="absolute inset-0 flex items-center justify-center pointer-events-none">' +
-        '<span class="rounded-full bg-black/55 text-white flex items-center justify-center" style="width:clamp(32px,18%,56px);height:clamp(32px,18%,56px);"><i class="fas fa-play ml-0.5" style="font-size:clamp(16px,42%,26px);"></i></span>' +
-        '</div>' +
-        '</a>' +
-        '<span class="absolute top-2 left-2 text-xs text-green-300 bg-black bg-opacity-50 px-2 py-0.5 rounded"><i class="fas fa-check-circle mr-1"></i>已生成</span>';
+        '<div class="relative w-full h-full bg-black overflow-hidden">' +
+        '<video class="w-full h-full object-contain bg-black" controls playsinline preload="metadata" src="' + escapedUrl + '">' +
+        '你的浏览器不支持 video 标签，请使用下方链接打开视频。' +
+        '</video>' +
+        '<span class="absolute top-2 left-2 text-xs text-green-300 bg-black bg-opacity-50 px-2 py-0.5 rounded"><i class="fas fa-check-circle mr-1"></i>已生成</span>' +
+        '<a class="absolute bottom-2 right-2 text-[11px] text-white bg-black bg-opacity-60 px-2 py-0.5 rounded hover:bg-opacity-75" target="_blank" rel="noopener noreferrer" href="' + escapedUrl + '">新窗口打开</a>' +
+        '</div>';
 }
 
 function normalizeGeneratedVideoUrl(videoUrl) {
